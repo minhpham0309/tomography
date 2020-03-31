@@ -1,7 +1,5 @@
 %%
 addpath('functions')
-addpath('functions\accelerate')
-addpath('functions\accelerate\splinterp')
 %%
 model = double( ReadMRC('data\vesicle.mrc') );
 model = permute(model,[2,3,1]);
@@ -59,7 +57,7 @@ end
 projs_FST = ifftshift( ifft( fftshift(projs_FST) ) );
 projs_FST = croppedOut( projs_FST, [dimx,Num_pj] );
 projs_FST = single( max( real(projs_FST), 0 ) );
-projs_FST = circshift(projs_FST, [0,0]);
+%projs_FST = circshift(projs_FST, [0,0]);
 
 figure(3); img(projs_radon, 'sinogram by RT', projs_FST,'sinogram by FST', ...
     projs_radon-projs_FST,'difference', 'caxis', [0,max(projs_FST(:))])
@@ -83,9 +81,3 @@ projs_FST_2d = squeeze(sum(projs_FST_3D,2));
 %%
 
 save('data\vesicle_2D.mat','projs_radon', 'projs_FST','thetas','model_2d')
-
-
-
-
-
-
