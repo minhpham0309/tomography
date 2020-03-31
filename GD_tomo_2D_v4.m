@@ -144,6 +144,3 @@ for iter=1:iterations
 end
 toc
 %% show result
-rec_rt = rec;
-
-
