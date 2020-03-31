@@ -14,9 +14,6 @@ dimy = size(model,2);
 
 o_ratio=3;
 
-%model_pad3D = My_paddzero( model, [o_ratio*dimx,o_ratio*dimy,o_ratio*dimz]);
-%model_K3D = my_fft( model_pad3D );
-
 %% simulate projections by Radon transform (RT)
 % rotation angle {theta}
 thetas = -90:3:72; 
@@ -62,21 +59,6 @@ projs_FST = single( max( real(projs_FST), 0 ) );
 figure(3); img(projs_radon, 'sinogram by RT', projs_FST,'sinogram by FST', ...
     projs_radon-projs_FST,'difference', 'caxis', [0,max(projs_FST(:))])
 sum( abs( projs_FST(:) - projs_radon(:) ) ) / sum( abs(projs_radon(:)) )
-
-%% simulate 3D-FST first, then compute projection
-%{
-Num_pj = length(thetas);
-projs_FST_3D = zeros(o_ratio*dimx,o_ratio*dimy, length(thetas) );
-
-for k = 1:Num_pj
-    projs_FST_3D(:,:,k) = calculate3Dprojection_splinterp( model_K3D, 0,thetas(k),0 );
-  
-end
-projs_FST_3D = croppedOut(projs_FST_3D, [dimx,dimy, length(thetas)]);
-projs_FST_2d = squeeze(sum(projs_FST_3D,2));
-%figure(2); img(projs_radon, '', projs_FST,'',...
-%    projs_FST_2d,'',projs_FST_2d-projs_radon,'', 'caxis', [0,max(projs_FST(:))])
-%}
 
 %%
 
